@@ -1,6 +1,6 @@
 node_modules/
 .env
-data/db.json
+# data/db.json is intentionally tracked so Render has a seed database
 .vscode/
 .DS_Store
 package-lock.json
