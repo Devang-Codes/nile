@@ -194,8 +194,14 @@ function updateAuthUI() {
 
 function updateCartBadge() {
   const badge = document.getElementById('cart-count-badge');
+  if (!badge) return;
   const totalItems = AppState.cart.reduce((sum, item) => sum + item.quantity, 0);
   badge.textContent = totalItems;
+  
+  // Trigger micro-animation bounce
+  badge.classList.remove('cart-badge-bounce');
+  void badge.offsetWidth; // Trigger layout reflow
+  badge.classList.add('cart-badge-bounce');
 }
 
 function updateLocationUI() {
@@ -239,11 +245,20 @@ async function showSearchSuggestions() {
     }
 
     dropdown.innerHTML = '';
-    // Show top 5 suggestions
+    // Show top 5 suggestions with rich visuals
     products.slice(0, 5).forEach(prod => {
       const item = document.createElement('div');
       item.className = 'suggestion-item';
-      item.innerHTML = `<i class="fa-solid fa-magnifying-glass"></i> <span>${prod.name}</span>`;
+      item.innerHTML = `
+        <img src="${prod.imageUrl}" alt="" style="width: 38px; height: 38px; object-fit: contain; background: #fff; border-radius: var(--border-radius-sm); border: 1px solid var(--border-color); flex-shrink: 0;">
+        <div style="flex-grow: 1; display: flex; flex-direction: column; min-width: 0; text-align: left;">
+          <span style="font-size: 0.85rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-primary);">${prod.name}</span>
+          <div style="display: flex; align-items: center; gap: 8px; font-size: 0.72rem; color: var(--text-secondary); margin-top: 2px;">
+            <span style="color: var(--primary-hover); font-weight: 700;">$${prod.price.toFixed(2)}</span>
+            <span style="color: var(--rating-color); display: inline-flex; align-items: center; gap: 2px;"><i class="fa-solid fa-star" style="font-size: 0.65rem;"></i> ${prod.rating}</span>
+          </div>
+        </div>
+      `;
       item.addEventListener('click', () => {
         document.getElementById('search-input').value = prod.name;
         dropdown.style.display = 'none';

@@ -2308,4 +2308,16 @@ body:not(.dark-mode) .skeleton-card::after {
   margin-top: auto;
 }
 
+/* Cart Badge Bounce Micro-animation */
+.cart-badge-bounce {
+  animation: badgeBounce 0.4s ease;
+}
+
+@keyframes badgeBounce {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+
+
 
