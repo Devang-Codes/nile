@@ -142,6 +142,30 @@ function initGlobalEvents() {
     e.preventDefault();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
+
+  // Cart Drawer open/close triggers
+  const cartNavBtn = document.getElementById('cart-nav-btn');
+  const closeCartDrawer = document.getElementById('close-cart-drawer');
+  const cartDrawerOverlay = document.getElementById('cart-drawer');
+
+  if (cartNavBtn) {
+    cartNavBtn.addEventListener('click', () => {
+      renderCartDrawer();
+      toggleCartDrawer(true);
+    });
+  }
+
+  if (closeCartDrawer) {
+    closeCartDrawer.addEventListener('click', () => {
+      toggleCartDrawer(false);
+    });
+  }
+
+  if (cartDrawerOverlay) {
+    cartDrawerOverlay.addEventListener('click', (e) => {
+      if (e.target === cartDrawerOverlay) toggleCartDrawer(false);
+    });
+  }
 }
 
 function updateAuthUI() {
@@ -251,6 +275,11 @@ function addToCart(product, quantity = 1) {
   
   localStorage.setItem('nile_cart', JSON.stringify(AppState.cart));
   updateCartBadge();
+  
+  // Render and slide open cart drawer preview
+  renderCartDrawer();
+  toggleCartDrawer(true);
+  
   showToast(`Added "${product.name.substring(0, 30)}..." to your Cart.`, 'success');
 }
 
@@ -260,6 +289,7 @@ function removeFromCart(id) {
   updateCartBadge();
   showToast('Item removed from cart.');
   renderCart(); // Re-render cart page if active
+  renderCartDrawer(); // Re-render drawer if active
 }
 
 function updateCartQuantity(id, qty) {
@@ -269,6 +299,7 @@ function updateCartQuantity(id, qty) {
     localStorage.setItem('nile_cart', JSON.stringify(AppState.cart));
     updateCartBadge();
     renderCart(); // Re-render cart summary
+    renderCartDrawer(); // Re-render drawer if active
   }
 }
 
@@ -278,6 +309,7 @@ function clearCart() {
   updateCartBadge();
   showToast('Cart cleared.');
   renderCart();
+  renderCartDrawer(); // Re-render drawer if active
 }
 
 // ==========================================
@@ -1558,4 +1590,80 @@ function triggerConfetti() {
       requestAnimationFrame(frame);
     }
   }());
+}
+
+// Open/Close Cart Drawer
+function toggleCartDrawer(show) {
+  const drawer = document.getElementById('cart-drawer');
+  if (drawer) {
+    drawer.style.display = show ? 'flex' : 'none';
+  }
+}
+
+// Renders Cart Preview items in side drawer
+function renderCartDrawer() {
+  const body = document.getElementById('cart-drawer-body');
+  const footer = document.getElementById('cart-drawer-footer');
+  
+  if (!body || !footer) return;
+
+  if (AppState.cart.length === 0) {
+    body.innerHTML = `
+      <div class="empty-drawer-state">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <p>Your Cart is empty</p>
+      </div>
+    `;
+    footer.innerHTML = '';
+    return;
+  }
+
+  const subtotal = AppState.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const totalItems = AppState.cart.reduce((sum, item) => sum + item.quantity, 0);
+
+  // Render items list
+  body.innerHTML = AppState.cart.map(item => `
+    <div class="drawer-item">
+      <div class="drawer-item-img-box">
+        <img src="${item.imageUrl}" alt="" class="drawer-item-img">
+      </div>
+      <div class="drawer-item-details">
+        <span class="drawer-item-title" title="${item.name}">${item.name}</span>
+        <div class="drawer-item-price-row">
+          <span class="drawer-item-price">$${item.price.toFixed(2)} x ${item.quantity}</span>
+          <span class="drawer-item-delete drawer-del-btn" data-id="${item.id}">Delete</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  // Render subtotal & CTAs
+  footer.innerHTML = `
+    <div class="drawer-summary-row">
+      <span>Subtotal (${totalItems} items):</span>
+      <span class="total">$${subtotal.toFixed(2)}</span>
+    </div>
+    <div class="drawer-actions-box">
+      <a href="#/cart" class="btn btn-secondary btn-block" id="drawer-view-cart-btn">View Shopping Cart</a>
+      <a href="#/checkout" class="btn btn-primary btn-block" id="drawer-checkout-btn">Proceed to Checkout</a>
+    </div>
+  `;
+
+  // Bind events in drawer
+  body.querySelectorAll('.drawer-del-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.getAttribute('data-id');
+      removeFromCart(id);
+    });
+  });
+
+  const viewCartBtn = document.getElementById('drawer-view-cart-btn');
+  const checkoutBtn = document.getElementById('drawer-checkout-btn');
+
+  if (viewCartBtn) {
+    viewCartBtn.addEventListener('click', () => toggleCartDrawer(false));
+  }
+  if (checkoutBtn) {
+    checkoutBtn.addEventListener('click', () => toggleCartDrawer(false));
+  }
 }

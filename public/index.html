@@ -106,13 +106,13 @@
         </a>
 
         <!-- Cart Button -->
-        <a href="#/cart" class="nav-cart-box">
+        <div class="nav-cart-box" id="cart-nav-btn" style="cursor: pointer;">
           <div class="cart-icon-container">
             <i class="fa-solid fa-cart-shopping"></i>
             <span class="cart-count" id="cart-count-badge">0</span>
           </div>
           <span class="cart-text">Cart</span>
-        </a>
+        </div>
       </div>
     </div>
 
@@ -175,6 +175,22 @@
           </select>
         </div>
         <button class="btn btn-secondary btn-block" id="apply-country-btn">Apply Country</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart Drawer Overlay -->
+  <div class="cart-drawer-overlay" id="cart-drawer">
+    <div class="cart-drawer-content">
+      <div class="cart-drawer-header">
+        <h3>Shopping Cart Preview</h3>
+        <button class="cart-drawer-close" id="close-cart-drawer">&times;</button>
+      </div>
+      <div class="cart-drawer-body" id="cart-drawer-body">
+        <!-- Dynamic items will load here -->
+      </div>
+      <div class="cart-drawer-footer" id="cart-drawer-footer">
+        <!-- Subtotal and checkout triggers -->
       </div>
     </div>
   </div>
