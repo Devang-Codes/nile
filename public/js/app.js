@@ -320,12 +320,18 @@ function handleRoute() {
   AppState.currentRoute = hash;
   
   const container = document.getElementById('app-content');
-  container.innerHTML = `
-    <div class="loading-container">
-      <div class="spinner"></div>
-      <p>Loading Nile...</p>
-    </div>
-  `;
+  
+  // Show skeleton loader on home and search views, spinner on others
+  if (hash === '#/' || hash.startsWith('#/search')) {
+    container.innerHTML = renderSkeletonGrid();
+  } else {
+    container.innerHTML = `
+      <div class="loading-container">
+        <div class="spinner"></div>
+        <p>Loading Nile...</p>
+      </div>
+    `;
+  }
 
   // Parse parameters
   if (hash.startsWith('#/product/')) {
@@ -1666,4 +1672,32 @@ function renderCartDrawer() {
   if (checkoutBtn) {
     checkoutBtn.addEventListener('click', () => toggleCartDrawer(false));
   }
+}
+
+// Renders the premium loading skeleton shimmer cards
+function renderSkeletonGrid() {
+  const cards = Array.from({ length: 4 }, () => `
+    <div class="skeleton-card">
+      <div class="skeleton-image"></div>
+      <div class="skeleton-text medium"></div>
+      <div class="skeleton-text short"></div>
+      <div class="skeleton-text short" style="margin-top: 10px;"></div>
+      <div class="skeleton-button"></div>
+    </div>
+  `).join('');
+
+  return `
+    <!-- Hero placeholder during skeleton load -->
+    <div class="hero-slider-container" style="background-color: var(--skeleton-bg); height: 380px;"></div>
+    
+    <div class="category-row">
+      <div class="section-header" style="margin-top: 1rem;">
+        <div class="skeleton-text" style="width: 240px; height: 28px; border-radius: var(--border-radius-sm);"></div>
+        <div class="skeleton-text" style="width: 140px; height: 28px; border-radius: var(--border-radius-sm);"></div>
+      </div>
+      <div class="products-grid">
+        ${cards}
+      </div>
+    </div>
+  `;
 }
