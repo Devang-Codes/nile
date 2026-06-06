@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nile | Shop Online for Electronics, Fashion, Books, Home & Kitchen</title>
+  <meta name="description" content="Nile - The ultimate online shopping experience. Discover deals, track orders, shop premium electronics, fashion, books, and home appliances.">
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dark-mode">
+  
+  <!-- HEADER / NAVIGATION BAR -->
+  <header>
+    <!-- Top Nav Bar -->
+    <div class="nav-top">
+      <div class="nav-left">
+        <!-- Logo -->
+        <a href="#/" class="logo-link">
+          <div class="logo">
+            <span class="nile-text">nile</span>
+            <span class="dot">.</span>
+          </div>
+        </a>
+        
+        <!-- Deliver Address Selection -->
+        <div class="nav-delivery-box" id="delivery-box-btn">
+          <i class="fa-solid fa-location-dot nav-icon"></i>
+          <div class="nav-delivery-info">
+            <span class="nav-line-1">Deliver to</span>
+            <span class="nav-line-2" id="delivery-location">Select Location</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Search Bar -->
+      <div class="nav-search-container">
+        <select id="search-category-select" class="search-select">
+          <option value="all">All Departments</option>
+          <option value="electronics">Electronics</option>
+          <option value="fashion">Fashion</option>
+          <option value="home">Home & Kitchen</option>
+          <option value="books">Books</option>
+        </select>
+        <input type="text" id="search-input" placeholder="Search Nile..." class="search-input" autocomplete="off">
+        <button id="search-btn" class="search-button">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+        <!-- Search suggestions dropdown -->
+        <div class="search-suggestions" id="search-suggestions-dropdown"></div>
+      </div>
+
+      <!-- Right Navigation Items -->
+      <div class="nav-right">
+        <!-- Language / Currency -->
+        <div class="nav-lang-box">
+          <span class="flag-icon">🇺🇸</span>
+          <span class="lang-text">EN</span>
+        </div>
+
+        <!-- Accounts & Lists -->
+        <div class="nav-account-box dropdown-trigger" id="account-nav-btn">
+          <div class="nav-account-info">
+            <span class="nav-line-1" id="user-greeting">Hello, Sign in</span>
+            <span class="nav-line-2">Account & Lists <i class="fa-solid fa-caret-down"></i></span>
+          </div>
+          
+          <!-- Accounts Dropdown Menu -->
+          <div class="account-dropdown" id="account-dropdown-menu">
+            <div class="auth-buttons-group" id="dropdown-auth-section">
+              <a href="#/login" class="btn btn-primary btn-block">Sign in</a>
+              <span class="new-customer-prompt">New customer? <a href="#/register">Start here.</a></span>
+            </div>
+            <hr class="dropdown-divider">
+            <div class="dropdown-columns">
+              <div class="dropdown-col">
+                <h3>Your Lists</h3>
+                <ul>
+                  <li><a href="#/">Create a List</a></li>
+                  <li><a href="#/">Find a List & Registry</a></li>
+                </ul>
+              </div>
+              <div class="dropdown-col">
+                <h3>Your Account</h3>
+                <ul>
+                  <li><a href="#/orders" id="dropdown-orders-link">Your Orders</a></li>
+                  <li><a href="#/" id="dropdown-profile-link">Your Account</a></li>
+                  <li><a href="#/seller" id="dropdown-seller-link">Seller Dashboard</a></li>
+                  <li id="signout-list-item" style="display: none;"><a href="#" id="signout-btn">Sign Out</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Returns & Orders -->
+        <a href="#/orders" class="nav-orders-box">
+          <span class="nav-line-1">Returns</span>
+          <span class="nav-line-2">& Orders</span>
+        </a>
+
+        <!-- Cart Button -->
+        <a href="#/cart" class="nav-cart-box">
+          <div class="cart-icon-container">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span class="cart-count" id="cart-count-badge">0</span>
+          </div>
+          <span class="cart-text">Cart</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Bottom sub-header Nav Bar -->
+    <div class="nav-bottom-bar">
+      <div class="nav-bottom-left">
+        <a href="#/" class="nav-bottom-link"><i class="fa-solid fa-bars"></i> All</a>
+        <a href="#/" class="nav-bottom-link">Today's Deals</a>
+        <a href="#/" class="nav-bottom-link">Customer Service</a>
+        <a href="#/seller" class="nav-bottom-link highlight-link"><i class="fa-solid fa-store"></i> Sell on Nile</a>
+      </div>
+      <div class="nav-bottom-right">
+        <!-- Dark Mode Toggle -->
+        <div class="theme-toggle-container">
+          <span class="theme-label"><i class="fa-solid fa-moon"></i> Dark Mode</span>
+          <label class="switch">
+            <input type="checkbox" id="theme-toggle-checkbox" checked>
+            <span class="slider round"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN APP CONTAINER -->
+  <main id="app-content">
+    <!-- Dynamic Screens get rendered here -->
+    <div class="loading-container">
+      <div class="spinner"></div>
+      <p>Loading Nile store...</p>
+    </div>
+  </main>
+
+  <!-- SIDEBAR OVERLAYS (Cart Drawer, Location Select modal, etc.) -->
+  
+  <!-- Location Modal -->
+  <div class="modal-overlay" id="location-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Choose your location</h3>
+        <button class="modal-close-btn" id="close-location-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Delivery options and delivery speeds may vary for different regions.</p>
+        <div class="form-group">
+          <label for="zipcode-input">Enter a US zip code</label>
+          <input type="text" id="zipcode-input" placeholder="e.g. 10001" class="form-input">
+        </div>
+        <button class="btn btn-primary btn-block" id="apply-zipcode-btn">Apply Zip Code</button>
+        <div class="modal-divider">or</div>
+        <div class="form-group">
+          <label for="country-select">Ship outside the US</label>
+          <select id="country-select" class="form-input">
+            <option value="United States">United States</option>
+            <option value="Canada">Canada</option>
+            <option value="United Kingdom">United Kingdom</option>
+            <option value="India">India</option>
+            <option value="Germany">Germany</option>
+            <option value="Australia">Australia</option>
+          </select>
+        </div>
+        <button class="btn btn-secondary btn-block" id="apply-country-btn">Apply Country</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- FOOTER -->
+  <footer>
+    <a href="#" class="back-to-top" id="back-to-top-btn">Back to top</a>
+    <div class="footer-links-grid">
+      <div class="footer-col">
+        <h3>Get to Know Us</h3>
+        <ul>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">About Nile</a></li>
+          <li><a href="#">Sustainability</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Make Money with Us</h3>
+        <ul>
+          <li><a href="#/seller">Sell on Nile</a></li>
+          <li><a href="#">Sell apps on Nile</a></li>
+          <li><a href="#">Supply to Nile</a></li>
+          <li><a href="#">Become an Affiliate</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Nile Payment Products</h3>
+        <ul>
+          <li><a href="#">Nile Rewards Visa Card</a></li>
+          <li><a href="#">Nile Store Card</a></li>
+          <li><a href="#">Nile Business Card</a></li>
+          <li><a href="#">Shop with Points</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Let Us Help You</h3>
+        <ul>
+          <li><a href="#/orders">Your Account</a></li>
+          <li><a href="#/orders">Your Orders</a></li>
+          <li><a href="#">Shipping Rates & Policies</a></li>
+          <li><a href="#">Replacement & Returns</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="logo bottom-logo">
+        <span class="nile-text">nile</span>
+        <span class="dot">.</span>
+      </div>
+      <p class="copyright">&copy; 2026 Nile Inc. or its affiliates. Built with premium Vanilla web stack for demonstration.</p>
+    </div>
+  </footer>
+
+  <!-- Application Logic -->
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
