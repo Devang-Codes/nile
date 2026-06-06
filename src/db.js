@@ -175,9 +175,19 @@ function initDb() {
 
 function readData() {
   initDb();
-  const raw = fs.readFileSync(dbPath, 'utf-8');
-  return JSON.parse(raw);
+  try {
+    const raw = fs.readFileSync(dbPath, 'utf-8');
+    return JSON.parse(raw);
+  } catch (err) {
+    console.error('DB read/parse error, re-seeding:', err.message);
+    // Delete corrupted file and re-init
+    if (fs.existsSync(dbPath)) fs.unlinkSync(dbPath);
+    initDb();
+    const raw = fs.readFileSync(dbPath, 'utf-8');
+    return JSON.parse(raw);
+  }
 }
+
 
 function writeData(data) {
   fs.writeFileSync(dbPath, JSON.stringify(data, null, 2), 'utf-8');
